@@ -50,16 +50,16 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - uses: azure/docker-login@v1
-        with:
-          login-server: docker.pkg.github.com
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      # - uses: azure/docker-login@v1
+      #   with:
+      #     login-server: docker.pkg.github.com
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy web app container
         uses: azure/webapps-container-deploy@v1
         with:
-          app-name: "docker-ttt"
+          app-name: "azure-test-ttt"
           images: docker.pkg.github.com/${{ github.repository }}/azure-ttt-image:${{ github.sha }}
 
       - name: Azure logout
