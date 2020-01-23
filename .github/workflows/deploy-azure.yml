@@ -34,17 +34,20 @@ jobs:
           name: webpack artifacts
           path: public
 
-      - name: Build, Tag, Push
-        uses: mattdavis0351/actions/docker-gpr@update-docker-action
-        id: dockerImage
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          image-name: bread-crumbs
-
       - name: "Login via Azure CLI"
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: |
+          docker build . -t docker.pkg.github.com/${{ github.repository }}/azure-image-name:${{ github.sha }}
+          docker push docker.pkg.github.com/${{ github.repository }}/azure-image-name:${{ github.sha }}
 
       - name: Deploy web app container
         uses: azure/webapps-container-deploy@v1
