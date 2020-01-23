@@ -35,7 +35,7 @@ jobs:
           path: public
 
       - name: create image and store in Packages
-        uses: mattdavis0351/actions/docker-gpr@update-docker-action
+        uses: mattdavis0351/actions/docker-gpr@1.2.0
         with:
           repo-token: ${{secrets.GITHUB_TOKEN}}
           image-name: azure-ttt-image
@@ -59,7 +59,7 @@ jobs:
       - name: Deploy web app container
         uses: azure/webapps-container-deploy@v1
         with:
-          app-name: "azure-ttt"
+          app-name: "azure-ttt-test"
           images: docker.pkg.github.com/${{ github.repository }}/azure-ttt-image:${{ github.sha }}
 
       - name: Azure logout
