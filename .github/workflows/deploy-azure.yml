@@ -52,7 +52,7 @@ jobs:
       - name: Deploy web app container
         uses: azure/webapps-container-deploy@v1
         with:
-          app-name: "actions-ttt"
+          app-name: "docker-ttt"
           images: ${{ steps.dockerImage.outputs.imageUrl }}
 
       - name: Azure logout
