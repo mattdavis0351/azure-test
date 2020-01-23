@@ -39,7 +39,7 @@ jobs:
         id: dockerImage
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          image-name: tic-tac-toe
+          image-name: bread-crumbs
 
   Deploy-to-Azure:
     runs-on: ubuntu-latest
