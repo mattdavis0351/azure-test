@@ -59,7 +59,7 @@ jobs:
       - name: Deploy web app container
         uses: azure/webapps-container-deploy@v1
         with:
-          app-name: "azure-test-ttt"
+          app-name: "azure-ttt"
           images: docker.pkg.github.com/${{ github.repository }}/azure-ttt-image:${{ github.sha }}
 
       - name: Azure logout
