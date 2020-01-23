@@ -58,9 +58,10 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy web app container
-        uses: azure/webapps-deploy@v1
+        uses: azure/webapps-container-deploy@v1
         with:
-          app-name: "docker-ttt"
+          app-name: "actions-ttt"
+          images: ${{ steps.dockerImage.outputs.imageUrl }}
 
       - name: Azure logout
         run: |
