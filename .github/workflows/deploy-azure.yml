@@ -46,16 +46,21 @@ jobs:
     needs: Build-Docker-Image
     name: Deploy app container to Azure
     steps:
+      - name: Download built artifact
+        uses: actions/download-artifact@master
+        with:
+          name: webpack artifacts
+          path: public
+
       - name: "Login via Azure CLI"
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy web app container
-        uses: azure/webapps-container-deploy@v1
+        uses: azure/webapps-deploy@v1
         with:
-          app-name: "tic-tac-toe"
-          images: ${{ steps.dockerImage.outputs.imageUrl }}
+          app-name: "docker-ttt"
 
       - name: Azure logout
         run: |
