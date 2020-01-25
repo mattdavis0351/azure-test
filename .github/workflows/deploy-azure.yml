@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  DOCKER_IMAGE_NAME: woo-hoo # Must be a name you have NEVER used before or GitHub Packages refuses to allow upload, even if it's a different repo!
+  DOCKER_IMAGE_NAME: tic-tac-toe # Must be a name you have NEVER used before or GitHub Packages refuses to allow upload, even if it's a different repo!
   IMAGE_REGISTRY_URL: docker.pkg.github.com
   #################################################
   ### USER PROVIDED VALUES ARE REQUIRED BELOW   ###
@@ -46,7 +46,8 @@ jobs:
           path: public
 
       - name: create image and store in Packages
-        uses: mattdavis0351/actions/docker-gpr@1.2.0
+        # uses: mattdavis0351/actions/docker-gpr@1.2.0
+        uses: mattdavis0351/actions/docker-gpr@error-handling
         with:
           repo-token: ${{secrets.GITHUB_TOKEN}}
           image-name: ${{env.DOCKER_IMAGE_NAME}}
