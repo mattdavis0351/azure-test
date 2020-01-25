@@ -3,15 +3,12 @@ name: Provision Azure environment
 on:
   pull_request:
     types: [labeled]
-    branches:
-      - create-course-env
+
 env:
-  AZURE_USERNAME: ${{secrets.AZURE_USERNAME}}
-  AZURE_PASSWORD: ${{secrets.AZURE_PASSWORD}}
-  AZURE_RESOURCE_GROUP: CD-with-actions
+  AZURE_RESOURCE_GROUP: cd-with-actions
   AZURE_SUBSCRIPTION: my-personal-sub
-  AZURE_APP_PLAN: actions-learning-lab
-  AZURE_WEBAPP_NAME: gh-actions-ttt
+  AZURE_APP_PLAN: actions-ttt-deployment
+  AZURE_WEBAPP_NAME: actions-ttt-app
   DOCKER_IMAGE_NAME: azure-ttt-image
   PACKAGES_TOKEN: ${{secrets.PACKAGES_TOKEN}}
 
@@ -24,40 +21,28 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Azure login
-        uses: azure/CLI@v1
+        uses: azure/login@v1
         with:
-          azcliversion: latest
-          inlineScript: |
-            az login --username ${{env.AZURE_USERNAME}} --password ${{env.AZURE_PASSWORD}}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create Azure resource group
         if: success()
-        uses: azure/CLI@v1
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az group create --location "Central US" --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{env.AZURE_SUBSCRIPTION}}
+        run: |
+          az group create --location "Central US" --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{env.AZURE_SUBSCRIPTION}}
 
       - name: Create Azure app service plan
         if: success()
-        uses: azure/CLI@v1
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az appservice plan create --resource-group ${{env.AZURE_RESOURCE_GROUP}} --name ${{env.AZURE_APP_PLAN}} --is-linux --sku F1 --subscription ${{env.AZURE_SUBSCRIPTION}}
+        run: |
+          az appservice plan create --resource-group ${{env.AZURE_RESOURCE_GROUP}} --name ${{env.AZURE_APP_PLAN}} --is-linux --sku F1 --subscription ${{env.AZURE_SUBSCRIPTION}}
 
       - name: Create webapp resource
         if: success()
-        uses: azure/CLI@v1
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az webapp create --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --plan ${{ env.AZURE_APP_PLAN }} --name ${{ env.AZURE_WEBAPP_NAME }}  ---deployment-container-image-name nginx --subscription ${{env.AZURE_SUBSCRIPTION}}
+        run: |
+          az webapp create --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --plan ${{ env.AZURE_APP_PLAN }} --name ${{ env.AZURE_WEBAPP_NAME }}  --deployment-container-image-name nginx --subscription ${{env.AZURE_SUBSCRIPTION}}
 
       - name: Configure webapp to use GitHub Packages
         if: success()
-        uses: azure/CLI@v1
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az webapp config container set --docker-custom-image-name docker.pkg.github.com/${{ github.repository }}/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }} --docker-registry-server-password ${{secrets.GITHUB_TOKEN}} --docker-registry-server-url https://docker.pkg.github.com --docker-registry-server-user ${{github.actor}} --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --subscription ${{env.AZURE_SUBSCRIPTION}}
+        run: |
+          az webapp config container set --docker-custom-image-name nginx --docker-registry-server-password ${{secrets.GITHUB_TOKEN}} --docker-registry-server-url https://docker.pkg.github.com --docker-registry-server-user ${{github.actor}} --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --subscription ${{env.AZURE_SUBSCRIPTION}}
+
+# az webapp config container set --docker-custom-image-name docker.pkg.github.com/${{ github.repository }}/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }} --docker-registry-server-password ${{secrets.GITHUB_TOKEN}} --docker-registry-server-url https://docker.pkg.github.com --docker-registry-server-user ${{github.actor}} --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --subscription ${{env.AZURE_SUBSCRIPTION}}
