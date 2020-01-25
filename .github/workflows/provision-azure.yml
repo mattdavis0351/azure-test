@@ -3,8 +3,7 @@ name: Provision Azure environment
 on:
   pull_request:
     types: [labeled]
-    branches:
-      - create-course-env
+
 env:
   AZURE_USERNAME: ${{secrets.AZURE_USERNAME}}
   AZURE_PASSWORD: ${{secrets.AZURE_PASSWORD}}
