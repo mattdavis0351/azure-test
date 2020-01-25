@@ -1,15 +1,26 @@
 name: Provision Azure environment
 
 on:
-  pull_request:
-    types: [labeled]
+  push:
+    branches:
+      - "create-env"
 
 env:
-  AZURE_RESOURCE_GROUP: cd-with-actions
-  AZURE_SUBSCRIPTION: my-personal-sub
-  AZURE_APP_PLAN: actions-ttt-deployment
-  AZURE_WEBAPP_NAME: actions-ttt-app
   PACKAGES_TOKEN: ${{secrets.PACKAGES_TOKEN}}
+  AZURE_RESOURCE_GROUP: cd-with-actions
+  AZURE_APP_PLAN: actions-ttt-deployment
+  AZURE_LOCATION: "Central US"
+  #################################################
+  ### USER PROVIDED VALUES ARE REQUIRED BELOW   ###
+  #################################################
+  #################################################
+  ### REPLACE WITH THE NAME OF YOUR SUBCRIPTION ###
+  AZURE_SUBSCRIPTION: my-personal-sub
+  #################################################
+  #################################################
+  ### REPLACE USERNAME WITH GH USERNAME         ###
+  AZURE_WEBAPP_NAME: USERNAME-ttt-app
+  #################################################
 
 jobs:
   Setup-Azure-Resources:
@@ -27,7 +38,7 @@ jobs:
       - name: Create Azure resource group
         if: success()
         run: |
-          az group create --location "Central US" --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{env.AZURE_SUBSCRIPTION}}
+          az group create --location ${{env.AZURE_LOCATION}} --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{env.AZURE_SUBSCRIPTION}}
 
       - name: Create Azure app service plan
         if: success()
