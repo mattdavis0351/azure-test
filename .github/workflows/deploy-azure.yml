@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  DOCKER_IMAGE_NAME: woo-hoo
+  DOCKER_IMAGE_NAME: tic-tac-toe
   IMAGE_REGISTRY_URL: docker.pkg.github.com
   AZURE_WEBAPP_NAME: actions-ttt-app
 
