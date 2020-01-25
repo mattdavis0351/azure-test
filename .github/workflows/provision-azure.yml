@@ -5,7 +5,7 @@ on:
     types: [labeled]
 
 env:
-  AZURE_RESOURCE_GROUP: CD-with-actions
+  AZURE_RESOURCE_GROUP: cd-with-actions
   AZURE_SUBSCRIPTION: my-personal-sub
   AZURE_APP_PLAN: actions-ttt-deployment
   AZURE_WEBAPP_NAME: actions-ttt-app
