@@ -9,7 +9,6 @@ env:
   AZURE_SUBSCRIPTION: my-personal-sub
   AZURE_APP_PLAN: actions-ttt-deployment
   AZURE_WEBAPP_NAME: actions-ttt-app
-  DOCKER_IMAGE_NAME: azure-ttt-image
   PACKAGES_TOKEN: ${{secrets.PACKAGES_TOKEN}}
 
 jobs:
@@ -44,5 +43,3 @@ jobs:
         if: success()
         run: |
           az webapp config container set --docker-custom-image-name nginx --docker-registry-server-password ${{secrets.GITHUB_TOKEN}} --docker-registry-server-url https://docker.pkg.github.com --docker-registry-server-user ${{github.actor}} --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --subscription ${{env.AZURE_SUBSCRIPTION}}
-
-# az webapp config container set --docker-custom-image-name docker.pkg.github.com/${{ github.repository }}/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }} --docker-registry-server-password ${{secrets.GITHUB_TOKEN}} --docker-registry-server-url https://docker.pkg.github.com --docker-registry-server-user ${{github.actor}} --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --subscription ${{env.AZURE_SUBSCRIPTION}}
