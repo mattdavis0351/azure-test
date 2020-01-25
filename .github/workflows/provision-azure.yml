@@ -23,9 +23,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Azure login
-        uses: azure/login@v1
+        uses: azure/CLI@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_3 }}
+          azcliversion: latest
+          inlineScript: |
+            az login --username ${{env.AZURE_USERNAME}} --password ${{env.AZURE_PASSWORD}}
 
       - name: Create Azure resource group
         if: success()
@@ -49,7 +51,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az webapp create --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --plan ${{ env.AZURE_APP_PLAN }} --name ${{ env.AZURE_WEBAPP_NAME }}  ---deployment-container-image-name nginx --subscription ${{env.AZURE_SUBSCRIPTION}}
+            az webapp create --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --plan ${{ env.AZURE_APP_PLAN }} --name ${{ env.AZURE_WEBAPP_NAME }}  --deployment-container-image-name nginx --subscription ${{env.AZURE_SUBSCRIPTION}}
 
       - name: Configure webapp to use GitHub Packages
         if: success()
