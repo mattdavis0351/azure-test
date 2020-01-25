@@ -3,7 +3,7 @@ name: Provision Azure environment
 on:
   pull_request:
     types: [labeled]
-    
+
 env:
   AZURE_USERNAME: ${{secrets.AZURE_USERNAME}}
   AZURE_PASSWORD: ${{secrets.AZURE_PASSWORD}}
@@ -23,11 +23,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Azure login
-        uses: azure/CLI@v1
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az login --username ${{env.AZURE_USERNAME}} --password ${{env.AZURE_PASSWORD}}
+        run: az login --username ${{env.AZURE_USERNAME}} --password ${{env.AZURE_PASSWORD}}
 
       - name: Create Azure resource group
         if: success()
