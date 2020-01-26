@@ -7,13 +7,6 @@ on:
 
 env:
   AZURE_RESOURCE_GROUP: cd-with-actions
-  #################################################
-  ### USER PROVIDED VALUES ARE REQUIRED BELOW   ###
-  #################################################
-  #################################################
-  ### REPLACE WITH THE ID OF YOUR SUBCRIPTION   ###
-  AZURE_SUBSCRIPTION_ID: 123-abc-4d5e
-  #################################################
 
 jobs:
   Setup-Azure-Resources:
@@ -31,4 +24,4 @@ jobs:
       - name: Destroy Azure environment
         if: success()
         run: |
-          az group delete --name ${{env.AZURE_RESOURCE_GROUP}} --subscription fa14ea09-0454-4d1c-985d-f83432419acc --yes
+          az group delete --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}} --yes
