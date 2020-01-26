@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  DOCKER_IMAGE_NAME: tic-tac-toe # Must not exist as a package associated with a different repo!
+  DOCKER_IMAGE_NAME: woo-hoo # Must not exist as a package associated with a different repo!
   IMAGE_REGISTRY_URL: docker.pkg.github.com
   AZURE_RESOURCE_GROUP: cd-with-actions
   AZURE_APP_PLAN: actions-ttt-deployment
