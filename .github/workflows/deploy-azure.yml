@@ -1,5 +1,4 @@
 name: Azure Production deployment
-
 on:
   push:
     branches:
